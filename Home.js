@@ -8,7 +8,7 @@ class Home extends React.Component {
       current : {},
       parents : [{
         id: 'root',
-        mimeTYpe: 'application/vnd.google-apps.folder',
+        mimeType: 'application/vnd.google-apps.folder',
         name: "Root"
       }],
       thumbnails: false
@@ -55,6 +55,17 @@ class Home extends React.Component {
       }, 300);
       return false;
   }
+  copyFile(id){
+    var url="https://www.googleapis.com/drive/v3/files/"+ id + "/copy"
+    var headers = {
+      Authorization : 'Bearer ' + AUTH_TOKEN
+    }
+    fetch(url,{method: 'POST', headers,})
+      .then(response => response.json())
+      .then(data => { 
+           console.log(data)
+          });
+  }
   loadData(){
       //AUTH_TOKEN = "ya29.GltjBlFp1_IiifotwFMgCllpXuyC9IFHLYURXTbfZcwheGTAxxmOaO-7cwU8YSRHli2NIJIT53wEPpnSMEvSDzQTVz49WJtBUREcKXSpoArztBYuhQYwP4NRoCmK"
       var headers = {
@@ -73,7 +84,7 @@ class Home extends React.Component {
       var query=encodeURIComponent(conditions.join(" and "))
       var url = "https://www.googleapis.com/drive/v3/files?q="+ query + "&fields=files(copyRequiresWriterPermission%2CcreatedTime%2Cdescription%2CiconLink%2Cid%2Ckind%2CmimeType%2Cname%2CownedByMe%2Cparents%2Cproperties%2Cshared%2CsharingUser%2Csize%2CteamDriveId%2CthumbnailLink%2Ctrashed%2CwebContentLink%2CwebViewLink)%2CincompleteSearch%2Ckind%2CnextPageToken&key="
       //url = 'response.json'
-      fetch(url,{headers,})
+      fetch(url,{method: 'GET', headers,})
       .then(response => response.json())
       .then(data => { 
           if (data.files){
@@ -120,18 +131,19 @@ class Home extends React.Component {
       var thumb = ""
       if (item.thumbnailLink){
         thumb = <div className="card-image">
-          <img src={item.thumbnailLink} title={item.id} ></img>
+          <img src={item.thumbnailLink} title={item.id} height="160"></img>
           <span className="card-title" ></span>
         </div>
       }
       var labelStyle = {
-        height: '2.2em',
+        height: '60px',
         lineHeight: '1.1em',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        padding: '6px'
       }
-      return <div className="col s6 m4 l3" >
+      return <div key={item.id} className="col s6 m4 l3" >
             <div className="card"
-            key={item.id} onClick={self.handleClick(item)} >
+             onClick={self.handleClick(item)} >
               <span>{thumb}</span>
               <div className="card-content" style={labelStyle} >
               {img} {item.name}
