@@ -12,6 +12,12 @@
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
 </head>
 <body>
+    <div>
+        <center>
+        <button id="signin-button" onclick="handleSignInClick()">Sign In</button>
+        <button id="signout-button" onclick="handleSignOutClick()">Sign Out</button> 
+        </center>
+    </div>
     <div id="root" ></div>
     <script type="text/babel" src="Home.js"></script>
     <script type="text/babel">
@@ -32,9 +38,6 @@ function init(){
     onload="this.onload=function(){};handleClientLoad()"
     onreadystatechange="if (this.readyState === 'complete') this.onload()">
     </script>
-    <center>
-        <button id="signin-button" onclick="handleSignInClick()">Sign In</button>
-        <button id="signout-button" onclick="handleSignOutClick()">Sign Out</button> 
-    </center>
+    
 </body>
 </html>

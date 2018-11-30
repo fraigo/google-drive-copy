@@ -129,8 +129,14 @@ class Home extends React.Component {
         img = <img src={item.iconLink} title={item.id} ></img>
       }
       var thumb = ""
+      var imageStyle = {
+        backgroundImage: 'url('+item.thumbnailLink+')',
+        backgroundPosition: 'center center',
+        backgroundSize: 'cover',
+        height: '160px'        
+      }
       if (item.thumbnailLink){
-        thumb = <div className="card-image">
+        thumb = <div className="card-image" style={imageStyle} >
           <img src={item.thumbnailLink} title={item.id} height="160"></img>
           <span className="card-title" ></span>
         </div>
@@ -139,7 +145,7 @@ class Home extends React.Component {
         height: '60px',
         lineHeight: '1.1em',
         overflow: 'hidden',
-        padding: '6px'
+        padding: '10px'
       }
       return <div key={item.id} className="col s6 m4 l3" >
             <div className="card"
