@@ -10,7 +10,8 @@ class Home extends React.Component {
         id: 'root',
         mimeTYpe: 'application/vnd.google-apps.folder',
         name: "Root"
-      }]
+      }],
+      thumbnails: false
     }
     this.handleClick = this.handleClick.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -55,8 +56,9 @@ class Home extends React.Component {
       return false;
   }
   loadData(){
+      //AUTH_TOKEN = "ya29.GltjBlFp1_IiifotwFMgCllpXuyC9IFHLYURXTbfZcwheGTAxxmOaO-7cwU8YSRHli2NIJIT53wEPpnSMEvSDzQTVz49WJtBUREcKXSpoArztBYuhQYwP4NRoCmK"
       var headers = {
-        Authorization : 'Bearer ya29.GltjBqJqxn3xRIQMTy6VOYq1XkAojYB3p26Cdc_VRR2S9Xf_r6uoqyf99JNcc6gw_Znh_x3EWD3STYfJoi0AbdTuIGvpBC-Vbuv-A57Cu1Z0dbxbOHJkgQqeFroM'
+        Authorization : 'Bearer ' + AUTH_TOKEN
       }
       var parent='root'
       if (this.state.current.id){
@@ -82,7 +84,28 @@ class Home extends React.Component {
   }
   render() {
     var self = this
-    var itemFunc= function(item, margin, header) {
+    var itemComp= function(item, margin, header) {
+      var style = {}
+      if (header){
+        style.fontWeight = 'bold'
+      }
+      if (margin>0){
+        style.marginLeft = (margin*10) + 'px'
+      }
+      var img = ""
+      if (item.iconLink) {
+        img = <img src={item.iconLink} title={item.id} ></img>
+      }
+      var thumb = ""
+      if (self.thumbnails && item.thumbnailLink){
+        thumb = <span><br/><img src={item.thumbnailLink} title={item.id} ></img></span>
+      }
+      return <li style={style} key={item.id} className="collection-item" onClick={self.handleClick(item)} >
+          {img} {item.name}
+          {thumb}
+      </li>
+    }
+    var cardComp= function(item, margin, header) {
       var style = {}
       if (header){
         style.fontWeight = 'bold'
@@ -96,23 +119,39 @@ class Home extends React.Component {
       }
       var thumb = ""
       if (item.thumbnailLink){
-        thumb = <span><br/><img src={item.thumbnailLink} title={item.id} ></img></span>
+        thumb = <div className="card-image">
+          <img src={item.thumbnailLink} title={item.id} ></img>
+          <span className="card-title" ></span>
+        </div>
       }
-      return <li style={style} key={item.id} className="collection-item" onClick={self.handleClick(item)} >
-          {img} {item.name}
-          {thumb}
-      </li>
+      var labelStyle = {
+        height: '2.2em',
+        lineHeight: '1.1em',
+        overflow: 'hidden'
+      }
+      return <div className="col s6 m4 l3" >
+            <div className="card"
+            key={item.id} onClick={self.handleClick(item)} >
+              <span>{thumb}</span>
+              <div className="card-content" style={labelStyle} >
+              {img} {item.name}
+              </div>
+            </div>
+          </div>
     }
-    const parentItems = this.state.parents.map( function(item,pos){ return itemFunc(item,pos,true) });
-    const listItems = this.state.data.map( function(item,pos){ return itemFunc(item,self.state.parents.length,false) });
+    
+    const parentItems = this.state.parents.map( function(item,pos){ return itemComp(item,pos,true) });
+    const listItems = this.state.data.map( function(item,pos){ return cardComp(item,self.state.parents.length,false) });
     return (
       <main >
           <div className="container">
           
           <ul className="collection">
           {parentItems}
-          {listItems}
           </ul>
+          <div className="row">
+          {listItems}
+          </div>
           { this.state.loading ? <img width="100%" src="loading.gif" /> : null }
           </div>
       </main>  

@@ -1,0 +1,2 @@
+API_KEY='AIzaSyAkD4TewLR0T4X0s0352IcoYtQvwKUKGzo'
+CLIENT_ID='212729604062-9lt99fgm9agg73rkfkbbjad1po0vpju1.apps.googleusercontent.com'
