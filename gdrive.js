@@ -26,12 +26,14 @@ function handleClientLoad() {
     // When signin status changes, this function is called.
     // If the signin status is changed to signedIn, we make an API call.
     if (isSignedIn) {
-
-      
       var user=(gapi.auth2.getAuthInstance().currentUser.get())
+      var profile = user.getBasicProfile()
       var auth=(user.getAuthResponse())
       AUTH_TOKEN=auth.access_token
-      console.log(AUTH_TOKEN)
+      console.log(profile)
+      document.getElementById("signin-button").innerHTML= "Signed as " + profile.getName()
+      document.getElementById("signout-button").style.display=""
+      
       init()
     }
   }
@@ -44,6 +46,11 @@ function handleClientLoad() {
 
   function handleSignOutClick(event) {
     gapi.auth2.getAuthInstance().signOut();
+    document.getElementById("signin-button").innerHTML= "Sign In"
+      
+    AUTH_TOKEN = ""
+    reactApp.reset()
+    init()
   }
 
   function retrieveAllFiles(callback) {

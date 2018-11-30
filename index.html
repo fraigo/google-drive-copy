@@ -12,18 +12,19 @@
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
 </head>
 <body>
-    <div>
-        <center>
-        <button id="signin-button" onclick="handleSignInClick()">Sign In</button>
-        <button id="signout-button" onclick="handleSignOutClick()">Sign Out</button> 
-        </center>
+    <div class="container row">
+        <div class="col s12" >
+            <button class="waves-effect waves-light btn right" id="signin-button" onclick="handleSignInClick()">Sign In</button>
+            
+            <button style="display:none" class="waves-effect waves-light btn right" id="signout-button" onclick="handleSignOutClick()">Sign Out</button>
+        </div>
     </div>
     <div id="root" ></div>
     <script type="text/babel" src="Home.js"></script>
     <script type="text/babel">
 
 function init(){
-    ReactDOM.render(
+    window.reactApp = ReactDOM.render(
         <Home />,
         document.getElementById('root')
     );

@@ -2,7 +2,14 @@
 class Home extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.state = this.initialState()
+    this.handleClick = this.handleClick.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.lastChange = 0
+  }
+  initialState(){
+    return {
       data: [], 
       loading: false,
       current : {},
@@ -13,10 +20,9 @@ class Home extends React.Component {
       }],
       thumbnails: false
     }
-    this.handleClick = this.handleClick.bind(this)
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.lastChange = 0
+  }
+  reset(){
+    this.setState(this.initialState())
   }
   handleClick(item){
     var self = this
@@ -36,7 +42,10 @@ class Home extends React.Component {
           self.loadData()
         }, 300);
       }else{
-        window.open(item.webViewLink,'preview','width=600,height=400')
+        var height=Math.max(document.body.clientHeight-50,600)
+        var width=Math.max(document.body.clientWidth-40,800)
+        
+        window.open(item.webViewLink,'preview','width='+height+',height='+width)
         //window.open(item.webContentLink)
       }
       
@@ -132,12 +141,13 @@ class Home extends React.Component {
       var imageStyle = {
         backgroundImage: 'url('+item.thumbnailLink+')',
         backgroundPosition: 'center center',
-        backgroundSize: 'cover',
+        backgroundSize: 'contain',
+        backgroundRepeat: 'no-repeat',
         height: '160px'        
       }
       if (item.thumbnailLink){
         thumb = <div className="card-image" style={imageStyle} >
-          <img src={item.thumbnailLink} title={item.id} height="160"></img>
+          
           <span className="card-title" ></span>
         </div>
       }
@@ -148,7 +158,7 @@ class Home extends React.Component {
         padding: '10px'
       }
       return <div key={item.id} className="col s6 m4 l3" >
-            <div className="card"
+            <div className="card hoverable"
              onClick={self.handleClick(item)} >
               <span>{thumb}</span>
               <div className="card-content" style={labelStyle} >
