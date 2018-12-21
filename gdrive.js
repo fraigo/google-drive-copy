@@ -30,8 +30,18 @@ function handleClientLoad() {
       var profile = user.getBasicProfile()
       var auth=(user.getAuthResponse())
       AUTH_TOKEN=auth.access_token
-      console.log(profile)
-      document.getElementById("signin-button").innerHTML= "Signed as " + profile.getName()
+      console.log(profile.getImageUrl())
+      var img=document.createElement("img");
+      img.setAttribute("height",30);
+      img.setAttribute("align","absmiddle");
+      img.style.borderRadius='99% 99%';
+      img.src=profile.getImageUrl();
+      var content=document.createElement("SPAN");
+      content.innerHTML=" "+profile.getName();
+      var signin=document.getElementById("signin-button");
+      signin.innerHTML='';
+      signin.appendChild(img);
+      signin.appendChild(content);
       document.getElementById("signout-button").style.display=""
       
       init()
